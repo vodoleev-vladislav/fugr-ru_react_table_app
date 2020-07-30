@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import MainTable from "./components/Table";
+import getEntries from "./services/entries";
+import "./App.css";
 
-function App() {
+const App = () => {
+  const [entries, setEntries] = useState([]);
+  const columns = ["id", "firstName", "lastName", "email", "phone"];
+  const smallData =
+    "http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}";
+  useEffect(() => {
+    (async () => {
+      const entries = await getEntries(smallData);
+      setEntries(entries);
+    })();
+  }, []);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MainTable columns={columns} entries={entries} />
     </div>
   );
-}
+};
 
 export default App;
