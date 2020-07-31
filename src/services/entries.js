@@ -1,6 +1,4 @@
-import axios from "axios";
-
 export default async (url) => {
-  const response = await axios.get(url);
-  return response.data;
+  const response = await fetch(url);
+  return response.json();
 };
