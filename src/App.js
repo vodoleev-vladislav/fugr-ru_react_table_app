@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import MainTable from "./components/Table";
+import DetailedInfo from "./components/DetailedInfo";
 import getEntries from "./services/entries";
 import "./App.css";
 
@@ -11,9 +12,10 @@ const App = () => {
       order: "",
     },
   });
+  const [selectedRow, setSelectedRow] = useState(null);
   const columns = ["id", "firstName", "lastName", "email", "phone"];
   const smallData =
-    "http://www.filltext.com/?rows=1000&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}";
+    "http://www.filltext.com/?rows=30&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}";
 
   const changeSort = (field) => {
     const order =
@@ -67,7 +69,10 @@ const App = () => {
         entries={state.entries}
         changeSort={changeSort}
         sortParams={state.sortParams}
+        selectedRow={selectedRow}
+        setSelectedRow={setSelectedRow}
       />
+      {selectedRow && <DetailedInfo entry={selectedRow} />}
     </div>
   );
 };

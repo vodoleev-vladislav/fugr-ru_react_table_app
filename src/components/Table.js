@@ -6,8 +6,16 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TablePagination from "@material-ui/core/TablePagination";
+import "./Table.css";
 
-const MainTable = ({ columns, entries, changeSort, sortParams }) => {
+const MainTable = ({
+  columns,
+  entries,
+  changeSort,
+  sortParams,
+  selectedRow,
+  setSelectedRow,
+}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
   const [filter, setFilter] = useState("");
@@ -30,6 +38,10 @@ const MainTable = ({ columns, entries, changeSort, sortParams }) => {
     event.preventDefault();
     setPage(0);
     setFilter(filterRef.current.value);
+  };
+
+  const handleRowClick = (event, entry) => {
+    setSelectedRow(entry);
   };
 
   const filteredEntries = filter
@@ -74,10 +86,14 @@ const MainTable = ({ columns, entries, changeSort, sortParams }) => {
           </TableHead>
           <TableBody>
             {paginatedEntries.map((entry) => (
-              <TableRow>
+              <TableRow
+                key={entry.firstName + entry.lastName + entry.id}
+                onClick={(e) => handleRowClick(e, entry)}
+                className={selectedRow === entry ? "table-row--selected" : ""}
+              >
                 {Object.keys(entry).map((column) =>
                   columns.includes(column) ? (
-                    <TableCell>{entry[column]}</TableCell>
+                    <TableCell key={column}>{entry[column]}</TableCell>
                   ) : null
                 )}
               </TableRow>
@@ -87,13 +103,12 @@ const MainTable = ({ columns, entries, changeSort, sortParams }) => {
       </TableContainer>
       <TablePagination
         count={filteredEntries.length}
-        // siblingCount={0}
         page={page}
         onChangePage={handlePageChange}
         rowsPerPage={rowsPerPage}
         rowsPerPageOptions={[10, 25, 50]}
         onChangeRowsPerPage={handleChangeRowsPerPage}
-      ></TablePagination>
+      />
     </>
   );
 };
