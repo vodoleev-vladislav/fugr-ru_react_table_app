@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MainTable from "./components/Table";
 import DetailedInfo from "./components/DetailedInfo";
+import NewEntryForm from "./components/NewEntryForm";
 import getEntries from "./services/entries";
 import "./App.css";
 
@@ -62,8 +63,13 @@ const App = () => {
     })();
   }, []);
 
+  const addNewEntry = (entry) => {
+    setState({ ...state, entries: [entry, ...state.entries] });
+  };
+
   return (
     <div className="App">
+      <NewEntryForm columns={columns} addNewEntry={addNewEntry} />
       <MainTable
         columns={columns}
         entries={state.entries}

@@ -6,6 +6,9 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TablePagination from "@material-ui/core/TablePagination";
+import FormControl from "@material-ui/core/FormControl";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
 import "./Table.css";
 
 const MainTable = ({
@@ -63,11 +66,10 @@ const MainTable = ({
 
   return (
     <>
-      <form onSubmit={handleFilter}>
-        <label>Filter</label>
-        <input ref={filterRef} />
-        <button>Найти</button>
-      </form>
+      <FormControl onSubmit={handleFilter}>
+        <TextField ref={filterRef} label="Filter" />
+        <Button>Найти</Button>
+      </FormControl>
       <TableContainer>
         <Table>
           <TableHead>
