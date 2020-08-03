@@ -7,8 +7,9 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TablePagination from "@material-ui/core/TablePagination";
 import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import Input from "@material-ui/core/Input";
+import InputLabel from "@material-ui/core/InputLabel";
 import "./Table.css";
 
 const MainTable = ({
@@ -38,9 +39,11 @@ const MainTable = ({
   };
 
   const handleFilter = (event) => {
+    const { filter } = event.currentTarget.elements;
     event.preventDefault();
     setPage(0);
-    setFilter(filterRef.current.value);
+    setSelectedRow(null);
+    setFilter(filter.value);
   };
 
   const handleRowClick = (event, entry) => {
@@ -66,10 +69,13 @@ const MainTable = ({
 
   return (
     <>
-      <FormControl onSubmit={handleFilter}>
-        <TextField ref={filterRef} label="Filter" />
-        <Button>Найти</Button>
-      </FormControl>
+      <form onSubmit={handleFilter}>
+        <FormControl>
+          <InputLabel htmlFor="filter">Filter</InputLabel>
+          <Input id="filter" ref={filterRef} />
+        </FormControl>
+        <Button type="submit">Найти</Button>
+      </form>
       <TableContainer>
         <Table>
           <TableHead>

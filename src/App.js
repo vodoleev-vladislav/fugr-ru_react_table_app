@@ -76,16 +76,20 @@ const App = () => {
       {state.entries.length === 0 && (
         <SelectableDatasets datasets={datasets} setEntries={setEntries} />
       )}
-      <NewEntryForm columns={columns} addNewEntry={addNewEntry} />
-      <MainTable
-        columns={columns}
-        entries={state.entries}
-        changeSort={changeSort}
-        sortParams={state.sortParams}
-        selectedRow={selectedRow}
-        setSelectedRow={setSelectedRow}
-      />
-      {selectedRow && <DetailedInfo entry={selectedRow} />}
+      {state.entries.length !== 0 && (
+        <>
+          <NewEntryForm columns={columns} addNewEntry={addNewEntry} />
+          <MainTable
+            columns={columns}
+            entries={state.entries}
+            changeSort={changeSort}
+            sortParams={state.sortParams}
+            selectedRow={selectedRow}
+            setSelectedRow={setSelectedRow}
+          />
+          {selectedRow && <DetailedInfo entry={selectedRow} />}
+        </>
+      )}
     </div>
   );
 };
