@@ -78,7 +78,11 @@ const App = () => {
       )}
       {state.entries.length !== 0 && (
         <>
-          <NewEntryForm columns={columns} addNewEntry={addNewEntry} />
+          <NewEntryForm
+            columns={columns}
+            addNewEntry={addNewEntry}
+            entries={state.entries}
+          />
           <MainTable
             columns={columns}
             entries={state.entries}

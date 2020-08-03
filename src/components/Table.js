@@ -110,6 +110,7 @@ const MainTable = ({
         </Table>
       </TableContainer>
       <TablePagination
+        component="div"
         count={filteredEntries.length}
         page={page}
         onChangePage={handlePageChange}

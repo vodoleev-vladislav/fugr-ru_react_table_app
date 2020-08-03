@@ -9,7 +9,22 @@ const initObject = (columns) => {
   return newObject;
 };
 
-const NewEntryForm = ({ columns, addNewEntry }) => {
+const mainColumns = ["id", "firstName", "lastName"];
+
+const isEntryUnique = (state, entries) => {
+  for (let i = 0; i < entries.length; i++) {
+    for (let j = 0; j < mainColumns.length; j++) {
+      if (!(state[mainColumns[j]] === entries[i][mainColumns[j]])) {
+        break;
+      } else if (j === mainColumns.length - 1) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+const NewEntryForm = ({ columns, addNewEntry, entries }) => {
   const [state, setState] = useState(initObject(columns));
   const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
   const updateFormState = (event, column) => {
@@ -26,14 +41,20 @@ const NewEntryForm = ({ columns, addNewEntry }) => {
   }, [state, columns]);
 
   const handleFormSubmit = (event) => {
-    addNewEntry({ ...state, id: parseInt(state.id) });
-    setState(initObject(columns));
+    const newEntry = { ...state, id: parseInt(state.id) };
+    if (isEntryUnique(newEntry, entries)) {
+      addNewEntry(newEntry);
+      setState(initObject(columns));
+    } else {
+      console.log("DUBLICATE!");
+    }
   };
 
   return (
     <FormControl>
       {columns.map((column) => (
         <TextField
+          key={column}
           type={column === "id" ? "number" : "text"}
           label={column}
           value={state[column]}

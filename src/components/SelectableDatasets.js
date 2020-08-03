@@ -14,7 +14,7 @@ const SelectableDatasets = ({ datasets, setEntries }) => {
       {isLoading && <div>Loading...</div>}
       {!isLoading &&
         Object.keys(datasets).map((dataset) => (
-          <button onClick={(e) => handleDatasetSelect(dataset)}>
+          <button key={dataset} onClick={(e) => handleDatasetSelect(dataset)}>
             {dataset}
           </button>
         ))}
