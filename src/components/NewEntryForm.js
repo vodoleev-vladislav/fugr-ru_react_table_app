@@ -26,7 +26,7 @@ const NewEntryForm = ({ columns, addNewEntry }) => {
   }, [state, columns]);
 
   const handleFormSubmit = (event) => {
-    addNewEntry(state);
+    addNewEntry({ ...state, id: parseInt(state.id) });
     setState(initObject(columns));
   };
 
@@ -34,6 +34,7 @@ const NewEntryForm = ({ columns, addNewEntry }) => {
     <FormControl>
       {columns.map((column) => (
         <TextField
+          type={column === "id" ? "number" : "text"}
           label={column}
           value={state[column]}
           onChange={(e) => updateFormState(e, column)}

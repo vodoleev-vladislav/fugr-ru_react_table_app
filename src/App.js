@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import MainTable from "./components/Table";
 import DetailedInfo from "./components/DetailedInfo";
 import NewEntryForm from "./components/NewEntryForm";
-import getEntries from "./services/entries";
+import SelectableDatasets from "./components/SelectableDatasets";
 import "./App.css";
+
+const datasets = {
+  "small data":
+    "http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}",
+  "big data":
+    "http://www.filltext.com/?rows=1000&id={number|1000}&firstName={firstName}&delay=3&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}",
+};
+
+const columns = ["id", "firstName", "lastName", "email", "phone"];
 
 const App = () => {
   const [state, setState] = useState({
@@ -13,10 +22,8 @@ const App = () => {
       order: "",
     },
   });
+
   const [selectedRow, setSelectedRow] = useState(null);
-  const columns = ["id", "firstName", "lastName", "email", "phone"];
-  const smallData =
-    "http://www.filltext.com/?rows=30&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}";
 
   const changeSort = (field) => {
     const order =
@@ -56,19 +63,19 @@ const App = () => {
     return entries.sort((a, b) => comparator(a, b));
   };
 
-  useEffect(() => {
-    (async () => {
-      const entries = await getEntries(smallData);
-      setState({ ...state, entries });
-    })();
-  }, []);
-
   const addNewEntry = (entry) => {
     setState({ ...state, entries: [entry, ...state.entries] });
   };
 
+  const setEntries = (entries) => {
+    setState({ ...state, entries });
+  };
+
   return (
     <div className="App">
+      {state.entries.length === 0 && (
+        <SelectableDatasets datasets={datasets} setEntries={setEntries} />
+      )}
       <NewEntryForm columns={columns} addNewEntry={addNewEntry} />
       <MainTable
         columns={columns}
