@@ -1,20 +1,21 @@
 import React from "react";
 import TextareaAutosize from "@material-ui/core/TextareaAutosize";
+import "./DetailedInfo.css";
 
 const DetailedInfo = ({ entry }) => (
-  <div>
+  <div className="table-info">
     <p>
       Выбран пользователь <b>{`${entry.firstName} ${entry.lastName}`}</b>
     </p>
     {entry.description && (
-      <div>
+      <>
         <p>Описание:</p>
         <TextareaAutosize
           value={entry.description}
           readOnly={true}
           style={{ border: "none", resize: "none" }}
         ></TextareaAutosize>
-      </div>
+      </>
     )}
     {entry.address && (
       <div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import "./NewEntryForm.css";
 
 const initObject = (columns) => {
   const newObject = {};
@@ -56,7 +56,7 @@ const NewEntryForm = ({
   };
 
   return (
-    <FormControl>
+    <form className="table-new-entry">
       {columns.map((column) => (
         <TextField
           key={column}
@@ -74,7 +74,7 @@ const NewEntryForm = ({
       >
         Добавить
       </Button>
-    </FormControl>
+    </form>
   );
 };
 

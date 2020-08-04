@@ -1,0 +1,9 @@
+.table-filter {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-evenly;
+}
+
+.table-filter__input {
+  margin: 0 1rem !important;
+}

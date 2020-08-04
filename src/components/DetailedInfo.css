@@ -1,0 +1,10 @@
+.table-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.table-info > textarea {
+  width: 100%;
+}

@@ -1,0 +1,10 @@
+.table-new-entry {
+  margin: 2rem 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.table-new-entry > * {
+  margin: 0 0.5rem !important;
+}

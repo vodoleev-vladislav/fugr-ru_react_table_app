@@ -4,6 +4,9 @@ import DetailedInfo from "./components/DetailedInfo";
 import NewEntryForm from "./components/NewEntryForm";
 import SelectableDatasets from "./components/SelectableDatasets";
 import Notification from "./components/Notification";
+import FilterForm from "./components/FilterForm";
+import Pagination from "./components/Pagination";
+import { Button } from "@material-ui/core";
 import "./App.css";
 
 const datasets = {
@@ -27,6 +30,45 @@ const App = () => {
   });
   const [selectedRow, setSelectedRow] = useState(null);
   const [activeError, setActiveError] = useState(false);
+  const [activeNewEntry, setActiveNewEntry] = useState(false);
+  const [filter, setFilter] = useState("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleFilter = (event) => {
+    const { filter } = event.currentTarget.elements;
+    event.preventDefault();
+    setPage(0);
+    setSelectedRow(null);
+    setFilter(filter.value);
+  };
+
+  const handlePageChange = (event, page) => {
+    setPage(page);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setPage(0);
+    setRowsPerPage(event.target.value);
+  };
+
+  const filteredEntries = filter
+    ? state.entries.filter((entry) => {
+        const data = columns.map((column) =>
+          entry[column].toString().toLowerCase()
+        );
+        for (let column of data) {
+          if (column.includes(filter.toLowerCase())) return true;
+        }
+        return false;
+      })
+    : state.entries;
+
+  const paginatedEntries = filteredEntries.slice(
+    rowsPerPage * page,
+    rowsPerPage * (page + 1)
+  );
+
   const changeSort = (field) => {
     const order =
       field !== state.sortParams.field ||
@@ -81,29 +123,46 @@ const App = () => {
   };
 
   return (
-    <div className="App">
-      <Notification
-        activeError={activeError}
-        message="User is not unique!"
-      ></Notification>
+    <div className="app">
+      <Notification activeError={activeError} message="User is not unique!" />
       {state.entries.length === 0 && (
         <SelectableDatasets datasets={datasets} setEntries={setEntries} />
       )}
       {state.entries.length !== 0 && (
         <>
-          <NewEntryForm
-            columns={columns}
-            addNewEntry={addNewEntry}
-            entries={state.entries}
-            updateNotification={updateNotification}
-          />
+          <div className="table-upper-panel">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={(e) => setActiveNewEntry(!activeNewEntry)}
+            >
+              Добавить
+            </Button>
+            <FilterForm handleFilter={handleFilter} />
+          </div>
+          {activeNewEntry && (
+            <NewEntryForm
+              columns={columns}
+              addNewEntry={addNewEntry}
+              entries={state.entries}
+              updateNotification={updateNotification}
+            />
+          )}
+
           <MainTable
             columns={columns}
-            entries={state.entries}
+            entries={paginatedEntries}
             changeSort={changeSort}
             sortParams={state.sortParams}
             selectedRow={selectedRow}
             setSelectedRow={setSelectedRow}
+          />
+          <Pagination
+            entries={filteredEntries}
+            page={page}
+            handlePageChange={handlePageChange}
+            handleChangeRowsPerPage={handleChangeRowsPerPage}
+            rowsPerPage={rowsPerPage}
           />
           {selectedRow && <DetailedInfo entry={selectedRow} />}
         </>
