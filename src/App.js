@@ -3,16 +3,19 @@ import MainTable from "./components/Table";
 import DetailedInfo from "./components/DetailedInfo";
 import NewEntryForm from "./components/NewEntryForm";
 import SelectableDatasets from "./components/SelectableDatasets";
+import Notification from "./components/Notification";
 import "./App.css";
 
 const datasets = {
-  "small data":
+  "small dataset":
     "http://www.filltext.com/?rows=32&id={number|1000}&firstName={firstName}&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}",
-  "big data":
+  "big dataset":
     "http://www.filltext.com/?rows=1000&id={number|1000}&firstName={firstName}&delay=3&lastName={lastName}&email={email}&phone={phone|(xxx)xxx-xx-xx}&address={addressObject}&description={lorem|32}",
 };
 
 const columns = ["id", "firstName", "lastName", "email", "phone"];
+
+let timeoutId = null;
 
 const App = () => {
   const [state, setState] = useState({
@@ -22,9 +25,8 @@ const App = () => {
       order: "",
     },
   });
-
   const [selectedRow, setSelectedRow] = useState(null);
-
+  const [activeError, setActiveError] = useState(false);
   const changeSort = (field) => {
     const order =
       field !== state.sortParams.field ||
@@ -71,8 +73,19 @@ const App = () => {
     setState({ ...state, entries });
   };
 
+  const updateNotification = () => {
+    setActiveError(true);
+    if (timeoutId) clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => setActiveError(false), 2000);
+  };
+
   return (
     <div className="App">
+      <Notification
+        activeError={activeError}
+        message="User is not unique!"
+      ></Notification>
       {state.entries.length === 0 && (
         <SelectableDatasets datasets={datasets} setEntries={setEntries} />
       )}
@@ -82,6 +95,7 @@ const App = () => {
             columns={columns}
             addNewEntry={addNewEntry}
             entries={state.entries}
+            updateNotification={updateNotification}
           />
           <MainTable
             columns={columns}

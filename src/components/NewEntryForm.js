@@ -24,7 +24,12 @@ const isEntryUnique = (state, entries) => {
   return true;
 };
 
-const NewEntryForm = ({ columns, addNewEntry, entries }) => {
+const NewEntryForm = ({
+  columns,
+  addNewEntry,
+  entries,
+  updateNotification,
+}) => {
   const [state, setState] = useState(initObject(columns));
   const [buttonIsDisabled, setButtonIsDisabled] = useState(true);
   const updateFormState = (event, column) => {
@@ -46,7 +51,7 @@ const NewEntryForm = ({ columns, addNewEntry, entries }) => {
       addNewEntry(newEntry);
       setState(initObject(columns));
     } else {
-      console.log("DUBLICATE!");
+      updateNotification();
     }
   };
 
@@ -61,7 +66,12 @@ const NewEntryForm = ({ columns, addNewEntry, entries }) => {
           onChange={(e) => updateFormState(e, column)}
         />
       ))}
-      <Button disabled={buttonIsDisabled} onClick={handleFormSubmit}>
+      <Button
+        variant="contained"
+        color="primary"
+        disabled={buttonIsDisabled}
+        onClick={handleFormSubmit}
+      >
         Добавить
       </Button>
     </FormControl>

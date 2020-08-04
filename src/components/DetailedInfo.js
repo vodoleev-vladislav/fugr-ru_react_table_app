@@ -6,7 +6,7 @@ const DetailedInfo = ({ entry }) => (
     <p>
       Выбран пользователь <b>{`${entry.firstName} ${entry.lastName}`}</b>
     </p>
-    {entry.description ? (
+    {entry.description && (
       <div>
         <p>Описание:</p>
         <TextareaAutosize
@@ -15,8 +15,8 @@ const DetailedInfo = ({ entry }) => (
           style={{ border: "none", resize: "none" }}
         ></TextareaAutosize>
       </div>
-    ) : null}
-    {entry.address ? (
+    )}
+    {entry.address && (
       <div>
         <p>
           Адрес проживания: <b>{entry.address.streetAddress}</b>
@@ -31,7 +31,7 @@ const DetailedInfo = ({ entry }) => (
           Индекс: <b>{entry.address.zip}</b>
         </p>
       </div>
-    ) : null}
+    )}
   </div>
 );
 

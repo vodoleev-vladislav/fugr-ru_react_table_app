@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -21,9 +21,8 @@ const MainTable = ({
   setSelectedRow,
 }) => {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(50);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [filter, setFilter] = useState("");
-  const filterRef = useRef();
 
   const handleTableHeadClick = (field) => (event) => {
     changeSort(field);
@@ -72,9 +71,11 @@ const MainTable = ({
       <form onSubmit={handleFilter}>
         <FormControl>
           <InputLabel htmlFor="filter">Filter</InputLabel>
-          <Input id="filter" ref={filterRef} />
+          <Input id="filter" />
         </FormControl>
-        <Button type="submit">Найти</Button>
+        <Button variant="contained" color="primary" type="submit">
+          Найти
+        </Button>
       </form>
       <TableContainer>
         <Table>
@@ -82,7 +83,7 @@ const MainTable = ({
             <TableRow>
               {columns.map((column) => (
                 <TableCell key={column} onClick={handleTableHeadClick(column)}>
-                  {column}
+                  <b>{column}</b>
                   {column === sortParams.field
                     ? sortParams.order === "asc"
                       ? String.fromCharCode(8593)

@@ -1,0 +1,13 @@
+.datasets {
+  position: absolute;
+  width: 50vw;
+  display: flex;
+  justify-content: space-evenly;
+  left: calc(50%);
+  top: calc(50%);
+  transform: translate(-50%, -50%);
+}
+
+.datasets__button {
+  width: 15vw;
+}

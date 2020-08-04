@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import getEntries from "../services/entries";
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import "./SelectableDatasets.css";
 
 const SelectableDatasets = ({ datasets, setEntries }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -10,13 +13,19 @@ const SelectableDatasets = ({ datasets, setEntries }) => {
   };
 
   return (
-    <div>
-      {isLoading && <div>Loading...</div>}
+    <div className="datasets">
+      {isLoading && <CircularProgress />}
       {!isLoading &&
         Object.keys(datasets).map((dataset) => (
-          <button key={dataset} onClick={(e) => handleDatasetSelect(dataset)}>
+          <Button
+            className="datasets__button"
+            variant="contained"
+            color="primary"
+            key={dataset}
+            onClick={(e) => handleDatasetSelect(dataset)}
+          >
             {dataset}
-          </button>
+          </Button>
         ))}
     </div>
   );
